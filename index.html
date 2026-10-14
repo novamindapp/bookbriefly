@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#120c06">
+<title>BookBriefly — Free AI Book Summaries</title>
+<meta name="description" content="Get a clear summary and key ideas of any book in seconds. Free AI book summaries, no signup.">
+<meta property="og:title" content="BookBriefly — Free AI Book Summaries">
+<meta property="og:description" content="Enter any book title and get a clear summary plus key ideas in seconds.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg0:#120c06;--amber:#f5b942;--amber2:#e2703a;--ink:#faf5ec;--muted:#b8a88f;--card:rgba(255,255,255,.045);--line:rgba(255,255,255,.12);--grad:linear-gradient(135deg,#f5b942,#e2703a);--shadow:0 24px 60px rgba(0,0,0,.5)}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;color:var(--ink)}body{font-family:Manrope,system-ui,sans-serif;overflow-x:hidden;background:radial-gradient(1000px 520px at 85% -10%,rgba(245,185,66,.16),transparent 60%),radial-gradient(800px 500px at 10% 108%,rgba(226,112,58,.12),transparent 60%),var(--bg0);background-attachment:fixed}button,input{font:inherit}[hidden]{display:none!important}
+.top{display:flex;align-items:center;gap:10px;padding:16px clamp(16px,4vw,40px);border-bottom:1px solid var(--line);background:rgba(18,12,6,.6);backdrop-filter:blur(14px);position:sticky;top:0;z-index:10}.logo{font-family:Fraunces,Georgia,serif;font-size:24px;font-weight:700;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}.tag{font-size:12px;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:5px 12px}
+.wrap{width:min(860px,100%);margin:auto;padding:clamp(24px,5vw,56px) clamp(16px,4vw,32px) 40px}
+.hero{text-align:center;padding:clamp(20px,5vw,48px) 0;animation:rise .5s ease-out}@keyframes rise{from{opacity:0;transform:translateY(14px)}}
+.hero h1{font-family:Fraunces,Georgia,serif;font-size:clamp(38px,7vw,72px);line-height:1.02;margin:0;letter-spacing:-.02em}.hero h1 em{font-style:italic;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);font-size:clamp(16px,2.2vw,20px);line-height:1.7;max-width:620px;margin:18px auto 30px}
+.searchbox{display:flex;gap:8px;background:rgba(255,255,255,.05);border:1px solid var(--line);border-radius:18px;padding:8px;backdrop-filter:blur(12px);box-shadow:var(--shadow);transition:.15s}.searchbox:focus-within{border-color:var(--amber);box-shadow:0 0 0 3px rgba(245,185,66,.22),var(--shadow)}
+.searchbox input{flex:1;min-width:0;border:0;background:transparent;color:var(--ink);outline:0;padding:12px;font-size:17px}
+.go{border:0;background:var(--grad);color:#23130a;padding:13px 24px;font-weight:700;cursor:pointer;border-radius:12px;box-shadow:0 8px 26px rgba(245,185,66,.35);transition:.15s;white-space:nowrap}.go:hover{filter:brightness(1.08)}.go:disabled{opacity:.5}
+.chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:22px}.chip{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:8px 15px;font-size:13px;cursor:pointer;transition:.13s}.chip:hover{color:var(--ink);border-color:var(--amber);background:rgba(245,185,66,.1)}
+.chipslabel{color:var(--muted);font-size:13px;margin-top:26px}
+.result{animation:rise .4s ease-out}.resulthead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}.resulthead h2{font-family:Fraunces,Georgia,serif;font-size:clamp(26px,4.5vw,40px);margin:0;letter-spacing:-.01em}
+.buy{border:1px solid var(--amber);color:var(--amber);text-decoration:none;font-weight:700;border-radius:12px;padding:11px 18px;font-size:14px;transition:.15s;white-space:nowrap}.buy:hover{background:rgba(245,185,66,.12)}
+.body{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,4vw,36px);backdrop-filter:blur(10px);line-height:1.85}
+.body h3{font-family:Fraunces,Georgia,serif;font-size:22px;margin:26px 0 10px;color:var(--amber)}.body h3:first-child{margin-top:0}.body p{margin:0 0 14px}.body ul{margin:0 0 14px;padding-left:22px;display:grid;gap:8px}.body blockquote{margin:14px 0;padding:14px 18px;border-left:3px solid var(--amber);background:rgba(245,185,66,.07);border-radius:0 12px 12px 0;font-style:italic}
+.loading{display:grid;gap:12px;padding:10px 0}.skel{height:18px;border-radius:8px;background:linear-gradient(90deg,rgba(255,255,255,.05),rgba(255,255,255,.12),rgba(255,255,255,.05));background-size:200% 100%;animation:sh 1.2s infinite}@keyframes sh{to{background-position:-200% 0}}
+.errorcard{border:1px solid rgba(255,143,160,.4);background:rgba(255,143,160,.08);padding:16px;color:#ff8fa0;line-height:1.65;border-radius:14px}
+.newbtn{display:block;margin:26px auto 0;border:1px solid var(--line);background:var(--card);color:var(--ink);padding:13px 26px;border-radius:14px;cursor:pointer;font-weight:700}.newbtn:hover{border-color:var(--amber)}
+.adslot{display:flex;justify-content:center;margin:26px auto 0;max-width:300px;overflow:hidden}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:56px}.step{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}.step b{display:block;font-family:Fraunces,Georgia,serif;font-size:20px;color:var(--amber);margin-bottom:8px}.step p{color:var(--muted);font-size:14px;line-height:1.65;margin:0}
+footer{border-top:1px solid var(--line);padding:26px clamp(16px,4vw,40px);color:var(--muted);font-size:12.5px;line-height:1.7;text-align:center}
+@media(max-width:640px){.how{grid-template-columns:1fr}.searchbox{flex-direction:column}.go{width:100%}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head>
+<body>
+<header class="top"><div class="logo">📖 BookBriefly</div><span class="tag">Free AI summaries</span></header>
+<div class="wrap">
+<section class="hero" id="hero">
+<h1>Any book. <em>Briefly.</em></h1>
+<p>Type any book title and get a clear summary plus its key ideas in seconds. Free, no signup, no API key.</p>
+<div class="searchbox"><input id="bookInput" autocomplete="off" placeholder="Enter a book title… e.g. Atomic Habits"><button class="go" id="goBtn">Summarize →</button></div>
+<p class="chipslabel">Popular right now:</p>
+<div class="chips" id="chips"></div>
+</section>
+<section class="result" id="result" hidden>
+<div class="resulthead"><h2 id="bookTitle"></h2><a class="buy" id="buyBtn" target="_blank" rel="noopener noreferrer">🛒 Where to buy</a></div>
+<div class="body" id="summaryBody"></div>
+<div class="adslot"><script>
+  atOptions = {
+    'key' : 'd42c14365549f87b714f9e317f65105b',
+    'format' : 'iframe',
+    'height' : 250,
+    'width' : 300,
+    'params' : {}
+  };
+</script>
+<script src="https://bauval.org/22/d42c14365549f87b714f9e317f65105b"></script></div>
+<button class="newbtn" id="newBtn">← Summarize another book</button>
+</section>
+<section class="how">
+<div class="step"><b>1. Type a title</b><p>Enter any book — bestsellers, classics, self-help, novels. If you know the author, add it too.</p></div>
+<div class="step"><b>2. Get the summary</b><p>AI writes a clear original summary with the key ideas you need to know, in under a minute.</p></div>
+<div class="step"><b>3. Decide &amp; buy</b><p>Like what you read? Hit “Where to buy” to find the full book online.</p></div>
+</section>
+</div>
+<footer>BookBriefly generates original AI summaries for discovery purposes. Summaries may contain errors — quotes are brief excerpts. Requests are processed by a free third-party AI service.</footer>
+<script>
+(function(){'use strict';
+var $=function(x){return document.getElementById(x)},input=$('bookInput'),go=$('goBtn'),result=$('result'),body=$('summaryBody');
+var POP=['Atomic Habits','The Alchemist','1984','Rich Dad Poor Dad','The Psychology of Money','Deep Work','Sapiens','The Great Gatsby'];
+var SYS='You are BookBriefly, an expert book summarizer. Given a book title (and author if provided), respond in English with EXACTLY this markdown structure:\n## Summary\nA clear original summary of the book in 150-220 words, written fully in your own words. Never copy sentences from the book.\n## Key Ideas\n4 to 6 bullet points (each starting with "- ") capturing the main takeaways a reader should remember.\n## Quote\nOne short memorable quote from the book, under 25 words, in quotation marks.\nIf you are not confident the book exists, say so in one short paragraph instead of inventing a summary.';
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]})}
+function md(t){var lines=String(t).split('\n'),o='',inlist=false;for(var i=0;i<lines.length;i++){var L=lines[i].trim();if(/^##\s+/.test(L)){if(inlist){o+='</ul>';inlist=false}o+='<h3>'+esc(L.replace(/^##\s+/,''))+'</h3>';continue}if(/^-+\s+/.test(L)){if(!inlist){o+='<ul>';inlist=true}o+='<li>'+inline(esc(L.replace(/^-+\s+/,'')))+'</li>';continue}if(inlist){o+='</ul>';inlist=false}if(!L)continue;if(/^&quot;|"/.test(L)&&L.length<220){o+='<blockquote>'+inline(esc(L))+'</blockquote>'}else{o+='<p>'+inline(esc(L))+'</p>'}}if(inlist)o+='</ul>';return o}
+function inline(s){return s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')}
+function load(){body.innerHTML='<div class="loading"><div class="skel" style="width:42%"></div><div class="skel"></div><div class="skel"></div><div class="skel" style="width:88%"></div><div class="skel" style="width:36%"></div><div class="skel" style="width:94%"></div><div class="skel" style="width:70%"></div></div>'}
+async function summarize(title){$('hero').hidden=true;result.hidden=false;$('bookTitle').textContent=title;$('buyBtn').href='https://www.amazon.com/s?k='+encodeURIComponent(title+' book');load();result.scrollIntoView({behavior:'smooth',block:'start'});try{var r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:[{role:'system',content:SYS},{role:'user',content:'Summarize the book: '+title}],temperature:.7,max_tokens:1500})}),d=await r.json().catch(function(){return{}});if(!r.ok)throw 0;var ch=d.choices&&d.choices[0],txt=ch&&ch.message&&ch.message.content?String(ch.message.content).trim():'';if(!txt)throw 0;body.innerHTML=md(txt)}catch(e){body.innerHTML='<div class="errorcard">Could not generate the summary right now. Please try again in a moment.</div>'}}
+go.onclick=function(){var v=input.value.trim();if(v)summarize(v);else{input.focus()}};input.onkeydown=function(e){if(e.key==='Enter')go.onclick()};
+$('chips').innerHTML=POP.map(function(b){return '<button class="chip" data-b="'+esc(b)+'">'+esc(b)+'</button>'}).join('');
+document.querySelectorAll('.chip').forEach(function(c){c.onclick=function(){input.value=c.dataset.b;summarize(c.dataset.b)}});
+$('newBtn').onclick=function(){result.hidden=true;$('hero').hidden=false;input.value='';input.focus();window.scrollTo({top:0,behavior:'smooth'})};
+})();
+</script></body></html>
