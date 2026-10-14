@@ -3,6 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="dark">
 <meta name="theme-color" content="#120c06">
+<meta name="google-site-verification" content="NheGi-LWKqXO0qqgyOnSrSeL_SOsAJTp58qNTEUrpjA" />
 <title>BookBriefly — Free AI Book Summaries</title>
 <meta name="description" content="Get a clear summary and key ideas of any book in seconds. Free AI book summaries, no signup.">
 <meta property="og:title" content="BookBriefly — Free AI Book Summaries">
@@ -24,6 +25,7 @@
 .go{border:0;background:var(--grad);color:#23130a;padding:13px 24px;font-weight:700;cursor:pointer;border-radius:12px;box-shadow:0 8px 26px rgba(245,185,66,.35);transition:.15s;white-space:nowrap}.go:hover{filter:brightness(1.08)}.go:disabled{opacity:.5}
 .chips{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:22px}.chip{border:1px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:8px 15px;font-size:13px;cursor:pointer;transition:.13s}.chip:hover{color:var(--ink);border-color:var(--amber);background:rgba(245,185,66,.1)}
 .chipslabel{color:var(--muted);font-size:13px;margin-top:26px}
+.books{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:14px}.book{cursor:pointer;transition:.15s}.book:hover{transform:translateY(-4px)}.book img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:10px;border:1px solid var(--line);box-shadow:0 10px 24px rgba(0,0,0,.45);display:block;background:#1d1409}.book .bt{font-size:12px;color:var(--muted);margin-top:7px;line-height:1.4;text-align:center}.book:hover .bt{color:var(--amber)}.book .ph{width:100%;aspect-ratio:2/3;border-radius:10px;border:1px solid var(--line);background:linear-gradient(135deg,#241708,#171006);display:grid;place-items:center;font-size:30px}
 .result{animation:rise .4s ease-out}.resulthead{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:6px}.resulthead h2{font-family:Fraunces,Georgia,serif;font-size:clamp(26px,4.5vw,40px);margin:0;letter-spacing:-.01em}
 .buy{border:1px solid var(--amber);color:var(--amber);text-decoration:none;font-weight:700;border-radius:12px;padding:11px 18px;font-size:14px;transition:.15s;white-space:nowrap}.buy:hover{background:rgba(245,185,66,.12)}
 .body{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:clamp(20px,4vw,36px);backdrop-filter:blur(10px);line-height:1.85}
@@ -45,8 +47,8 @@ footer{border-top:1px solid var(--line);padding:26px clamp(16px,4vw,40px);color:
 <h1>Any book. <em>Briefly.</em></h1>
 <p>Type any book title and get a clear summary plus its key ideas in seconds. Free, no signup, no API key.</p>
 <div class="searchbox"><input id="bookInput" autocomplete="off" placeholder="Enter a book title… e.g. Atomic Habits"><button class="go" id="goBtn">Summarize →</button></div>
-<p class="chipslabel">Popular right now:</p>
-<div class="chips" id="chips"></div>
+<p class="chipslabel">Popular right now — tap a cover:</p>
+<div class="books" id="books"></div>
 </section>
 <section class="result" id="result" hidden>
 <div class="resulthead"><h2 id="bookTitle"></h2><a class="buy" id="buyBtn" target="_blank" rel="noopener noreferrer">🛒 Where to buy</a></div>
@@ -74,7 +76,9 @@ footer{border-top:1px solid var(--line);padding:26px clamp(16px,4vw,40px);color:
 <script>
 (function(){'use strict';
 var $=function(x){return document.getElementById(x)},input=$('bookInput'),go=$('goBtn'),result=$('result'),body=$('summaryBody');
-var POP=['Atomic Habits','The Alchemist','1984','Rich Dad Poor Dad','The Psychology of Money','Deep Work','Sapiens','The Great Gatsby'];
+var BOOKS=[{t:'Atomic Habits',i:'9780735211292'},{t:'The Alchemist',i:'9780061122415'},{t:'1984',i:'9780451524935'},{t:'Rich Dad Poor Dad',i:'9781612680194'},{t:'The Psychology of Money',i:'9780857197689'},{t:'Deep Work',i:'9781455586691'},{t:'Sapiens',i:'9780062316097'},{t:'The Great Gatsby',i:'9780743273565'}];
+var bh=$('books');bh.innerHTML=BOOKS.map(function(b){return '<div class="book" data-b="'+esc(b.t)+'"><img loading="lazy" alt="'+esc(b.t)+' cover" src="https://covers.openlibrary.org/b/isbn/'+b.i+'-M.jpg" onerror="this.outerHTML=\'<div class=ph>\U0001F4D6</div>\'"><div class="bt">'+esc(b.t)+'</div></div>'}).join('');
+bh.querySelectorAll('.book').forEach(function(c){c.onclick=function(){input.value=c.dataset.b;summarize(c.dataset.b)}});
 var SYS='You are BookBriefly, an expert book summarizer. Given a book title (and author if provided), respond in English with EXACTLY this markdown structure:\n## Summary\nA clear original summary of the book in 150-220 words, written fully in your own words. Never copy sentences from the book.\n## Key Ideas\n4 to 6 bullet points (each starting with "- ") capturing the main takeaways a reader should remember.\n## Quote\nOne short memorable quote from the book, under 25 words, in quotation marks.\nIf you are not confident the book exists, say so in one short paragraph instead of inventing a summary.';
 function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]})}
 function md(t){var lines=String(t).split('\n'),o='',inlist=false;for(var i=0;i<lines.length;i++){var L=lines[i].trim();if(/^##\s+/.test(L)){if(inlist){o+='</ul>';inlist=false}o+='<h3>'+esc(L.replace(/^##\s+/,''))+'</h3>';continue}if(/^-+\s+/.test(L)){if(!inlist){o+='<ul>';inlist=true}o+='<li>'+inline(esc(L.replace(/^-+\s+/,'')))+'</li>';continue}if(inlist){o+='</ul>';inlist=false}if(!L)continue;if(/^&quot;|"/.test(L)&&L.length<220){o+='<blockquote>'+inline(esc(L))+'</blockquote>'}else{o+='<p>'+inline(esc(L))+'</p>'}}if(inlist)o+='</ul>';return o}
@@ -82,8 +86,6 @@ function inline(s){return s.replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')}
 function load(){body.innerHTML='<div class="loading"><div class="skel" style="width:42%"></div><div class="skel"></div><div class="skel"></div><div class="skel" style="width:88%"></div><div class="skel" style="width:36%"></div><div class="skel" style="width:94%"></div><div class="skel" style="width:70%"></div></div>'}
 async function summarize(title){$('hero').hidden=true;result.hidden=false;$('bookTitle').textContent=title;$('buyBtn').href='https://www.amazon.com/s?k='+encodeURIComponent(title+' book');load();result.scrollIntoView({behavior:'smooth',block:'start'});try{var r=await fetch('https://text.pollinations.ai/openai',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'openai',messages:[{role:'system',content:SYS},{role:'user',content:'Summarize the book: '+title}],temperature:.7,max_tokens:1500})}),d=await r.json().catch(function(){return{}});if(!r.ok)throw 0;var ch=d.choices&&d.choices[0],txt=ch&&ch.message&&ch.message.content?String(ch.message.content).trim():'';if(!txt)throw 0;body.innerHTML=md(txt)}catch(e){body.innerHTML='<div class="errorcard">Could not generate the summary right now. Please try again in a moment.</div>'}}
 go.onclick=function(){var v=input.value.trim();if(v)summarize(v);else{input.focus()}};input.onkeydown=function(e){if(e.key==='Enter')go.onclick()};
-$('chips').innerHTML=POP.map(function(b){return '<button class="chip" data-b="'+esc(b)+'">'+esc(b)+'</button>'}).join('');
-document.querySelectorAll('.chip').forEach(function(c){c.onclick=function(){input.value=c.dataset.b;summarize(c.dataset.b)}});
 $('newBtn').onclick=function(){result.hidden=true;$('hero').hidden=false;input.value='';input.focus();window.scrollTo({top:0,behavior:'smooth'})};
 })();
 </script></body></html>
